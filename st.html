@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Type</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex;
+    padding: 0 10px;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient( #970e32, #d0415e, #FFFFFF);
+}
+#paragraph{
+    color: #646669;
+}
+.result-details{
+    color: white;
+}
+::selection {
+    color: #fff;
+    background: #fc3a52;
+}
+.wrapper {
+    width: 700px;
+    padding: 35px;
+    background: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+}
+.wrapper .input-field {
+    opacity: 0;
+    z-index: -999;
+    position: absolute;
+}
+.wrapper .content-box {
+    padding: 13px 20px 0;
+    border-radius: 10px;
+    border: 4px solid #fc3a52;
+}
+.content-box .typing-text {
+    overflow: hidden;
+    max-height: 256px;
+}
+.typing-text::-webkit-scrollbar {
+    width: 0;
+}
+.typing-text p {
+    font-size: 21px;
+    text-align: justify;
+    letter-spacing: 1px;
+    word-break: break-all;
+}
+.typing-text p span {
+    position: relative;
+}
+.typing-text p span.correct {
+    color: #d1d0c5;
+}
+.typing-text p span.incorrect {
+    color: #ca4754;
+    border-radius: 4px;
+}
+/* .typing-text p span.active {
+    color: #17A2B8;
+} */
+.typing-text p span.active::before {
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    border-radius: 5px;
+    background: #fc3a52;
+    animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
+.content-box .content {
+    margin-top: 17px;
+    display: flex;
+    padding: 12px 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 3px solid #fc3a52;
+}
+.content button {
+    outline: none;
+    border: none;
+    width: 105px;
+    color: #fc3a52;
+    padding: 8px 0;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 15px;
+    border: 3px solid #fc3a52;
+    background: none;
+    transition: transform 0.2s ease;
+}
+.content button:active {
+    transform: scale(0.89);
+}
+.content button:hover {
+    background: #FFFFFF;
+}
+.content .result-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: calc(100% - 140px);
+    justify-content: space-between;
+}
+.result-details li {
+    display: flex;
+    height: 20px;
+    list-style: none;
+    position: relative;
+    align-items: center;
+}
+.result-details li:not(:first-child) {
+    padding-left: 22px;
+    border-left: 2px solid #bfbfbf;
+}
+.result-details li p {
+    font-size: 13px;
+}
+.result-details li span {
+    display: block;
+    font-size: 13px;
+    margin-left: 10px;
+}
+li span b {
+    font-weight: 500;
+}
+li:not(:first-child) span {
+    font-weight: 500;
+}
+@media (max-width: 745px) {
+    .wrapper {
+        padding: 20px;
+    }
+    .content-box .content {
+        padding: 20px 0;
+    }
+    .content-box .typing-text {
+        max-height: 100%;
+    }
+    .typing-text p {
+        font-size: 19px;
+        text-align: left;
+    }
+    .content button {
+        width: 100%;
+        font-size: 15px;
+        padding: 10px 0;
+        margin-top: 20px;
+    }
+    .content .result-details {
+        width: 100%;
+    }
+    .result-details li:not(:first-child) {
+        border-left: 0;
+        padding: 0;
+    }
+    .result-details li p,
+    .result-details li span {
+        font-size: 15px;
+    }
+}
+@media (max-width: 518px) {
+    .wrapper .content-box {
+        padding: 10px 15px 0;
+    }
+    .typing-text p {
+        font-size: 13px;
+    }
+    .result-details li {
+        margin-bottom: 10px;
+    }
+    .content button {
+        margin-top: 10px;
+    }
+}
+</style>
+<body>
+    <div class="wrapper">
+        <input type="text" class="input-field">
+        <div class="content-box">
+            <div class="typing-text">
+                <p id="paragraph"></p>
+            </div>
+            <div class="content">
+                <ul class="result-details">
+                    <li class="time">
+                        <p>
+                            Time Left:
+                        </p>
+                        <span><b>60</b>s</span>
+                    </li>
+                    <li class="mistake">
+                        <p>
+                            Mistakes:
+                        </p>
+                        <span>0</span>
+                    </li>
+                    <li class="wpm">
+                        <p>
+                            WPM:
+                        </p>
+                        <span>0</span>
+                    </li>
+                    <li class="cpm">
+                        <p>
+                            CPM:
+                        </p>
+                        <span>0</span>
+                    </li>
+                </ul>
+                <button>Try Again</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const paragraphs = [
+"In the heart of the bustling city, amidst the cacophony of honking horns and bustling crowds, stood a solitary figure. Their silhouette, outlined against the backdrop of towering skyscrapers, seemed to blend into the urban landscape like a shadow in the night. With each step, they navigated the maze of streets and alleyways with purposeful strides, their destination known only to them.",
+
+"As they walked, they passed by street vendors hawking their wares, the enticing aroma of sizzling street food mingling with the scent of exhaust fumes and freshly brewed coffee. Pedestrians hurried past, their faces obscured by scarves and hats, lost in their own thoughts and worries.",
+
+"But amidst the chaos of city life, there was a sense of quiet determination in the air. The rhythmic clack of heels on pavement echoed through the streets, a steady beat that seemed to propel the city forward. Each passerby, with their own hopes and dreams, added to the tapestry of urban life, weaving together a story that was uniquely their own.",
+
+"And yet, despite the hustle and bustle, there was a sense of unity in the city's diversity. People from all walks of life, from every corner of the globe, came together in this vibrant metropolis, each bringing their own unique perspective and experiences to the table.",
+
+"As the sun dipped below the horizon, casting long shadows across the city streets, the solitary figure paused for a moment, taking in the beauty of the city skyline. In that moment of quiet reflection, they felt a sense of belonging wash over them, a feeling of connection to something greater than themselves.",
+
+"And so, with renewed purpose and determination, they continued on their journey, knowing that no matter where life took them, the city would always be there, a constant and reassuring presence in their ever-changing world.",
+
+"As the evening descended upon the city, the neon lights began to flicker to life, casting a kaleidoscope of colors onto the pavement below. Each storefront, adorned with flashing signs and glittering displays, vied for the attention of passersby, promising a glimpse into a world of luxury and extravagance.",
+
+"Amidst the hustle and bustle of the city streets, a sense of anticipation hung in the air. For some, it was the promise of a night filled with revelry and excitement, while for others, it was the quiet comfort of returning home to loved ones after a long day's work.",
+
+"In the midst of it all, the solitary figure pressed on, their footsteps echoing against the concrete jungle that surrounded them. With each passing moment, they felt a sense of wonder and awe at the sheer magnitude of the city, its towering skyscrapers reaching up towards the heavens like sentinels guarding the secrets of the cosmos.",
+
+"But amidst the chaos and clamor, there were moments of serenity to be found. In the quiet corners of the city, away from the hustle and bustle of the main thoroughfares, one could find a sense of peace and tranquility, a refuge from the frenetic pace of urban life.",
+
+"And so, as the night wore on and the city lights twinkled like stars in the night sky, the solitary figure found solace in the knowledge that no matter how vast and sprawling the city may be, there would always be a place for them within its embrace.",
+
+"As the night deepened, the city took on a life of its own, pulsating with energy and vitality. From the rooftop bars to the dimly lit alleyways, every corner seemed to hum with the rhythm of urban existence. The distant sound of music drifted through the air, mingling with the laughter and chatter of the city's inhabitants.",
+
+"In the midst of this symphony of sound and light, the solitary figure found themselves drawn to the heart of the city's nightlife. They navigated the crowded streets with ease, their senses alive with the sights and sounds of the bustling metropolis.",
+
+"With each passing moment, they encountered a kaleidoscope of humanity: the young lovers stealing a kiss beneath the glow of a streetlamp, the weary busker strumming their guitar for spare change, the group of friends sharing stories and laughter over a late-night meal.",
+
+"And yet, amidst the hustle and bustle, there was a sense of intimacy to be found. In the quiet moments shared between strangers, there existed a connection that transcended language and culture, a shared understanding of what it meant to be human in a vast and unforgiving world.",
+
+"As the night stretched on into the early hours of the morning, the solitary figure found themselves lost in the labyrinthine streets of the city. But far from feeling afraid or alone, they embraced the chaos around them, knowing that within the heart of the city lay the promise of endless adventure and possibility.",
+
+"The solitary figure found themselves drawn deeper into the heart of the city, where the streets pulsed with the heartbeat of humanity. Neon signs flickered overhead, illuminating the faces of those who wandered below in a surreal glow. Each alleyway held the promise of untold stories, whispered secrets waiting to be uncovered in the darkness.",
+
+"But amidst the chaos, there was a sense of unity that transcended the frenetic energy of the night. Strangers passed each other with nods and smiles, their shared experience of the city binding them together in a silent camaraderie. In the midst of the urban jungle, a sense of belonging washed over the solitary figure, a feeling of kinship with those who called this vibrant metropolis home.",
+
+"As dawn approached on the horizon, painting the sky with hues of pink and gold, the city began to stir from its nocturnal slumber. The streets grew quieter, the crowds thinning as the promise of a new day beckoned. But for the solitary figure, the magic of the night would linger on, a memory etched into the very fabric of their being, a testament to the enduring spirit of the city that never sleeps.",
+];
+
+const typingText = document.querySelector(".typing-text p")
+const inpField = document.querySelector(".wrapper .input-field")
+const tryAgainBtn = document.querySelector(".content button")
+const timeTag = document.querySelector(".time span b")
+const mistakeTag = document.querySelector(".mistake span")
+const wpmTag = document.querySelector(".wpm span")
+const cpmTag = document.querySelector(".cpm span")
+
+let timer;
+let maxTime = 60;
+let timeLeft = maxTime;
+let charIndex = mistakes = isTyping = 0;
+
+function loadParagraph() {
+    const ranIndex = Math.floor(Math.random() * paragraphs.length);
+    typingText.innerHTML = "";
+    paragraphs[ranIndex].split("").forEach(char => {
+        console.log(char);
+        let span = `<span>${char}</span>`
+        typingText.innerHTML += span;
+    });
+    typingText.querySelectorAll("span")[0].classList.add("active");
+    document.addEventListener("keydown", () => inpField.focus());
+    typingText.addEventListener("click", () => inpField.focus());
+}
+
+function initTyping() {
+    let characters = typingText.querySelectorAll("span");
+    let typedChar = inpField.value.split("")[charIndex];
+    if (charIndex < characters.length - 1 && timeLeft > 0) {
+        if (!isTyping) {
+            timer = setInterval(initTimer, 1000);
+            isTyping = true;
+        }
+        if (typedChar == null) {
+            if (charIndex > 0) {
+                charIndex--;
+                if (characters[charIndex].classList.contains("incorrect")) {
+                    mistakes--;
+                }
+                characters[charIndex].classList.remove("correct", "incorrect");
+            }
+        } else {
+            if (characters[charIndex].innerText == typedChar) {
+                characters[charIndex].classList.add("correct");
+            } else {
+                mistakes++;
+                characters[charIndex].classList.add("incorrect");
+            }
+            charIndex++;
+        }
+        characters.forEach(span => span.classList.remove("active"));
+        characters[charIndex].classList.add("active");
+
+        let wpm = Math.round(((charIndex - mistakes) / 5) / (maxTime - timeLeft) * 60);
+        wpm = wpm < 0 || !wpm || wpm === Infinity ? 0: wpm;
+
+        wpmTag.innerText = wpm;
+        mistakeTag.innerText = mistakes;
+        cpmTag.innerText = charIndex - mistakes;
+    } else {
+        clearInterval(timer);
+        inpField.value = "";
+    }
+}
+
+function initTimer() {
+    if (timeLeft > 0) {
+        timeLeft--;
+        timeTag.innerText = timeLeft;
+        let wpm = Math.round(((charIndex - mistakes) / 5) / (maxTime - timeLeft) * 60);
+        wpmTag.innerText = wpm;
+    } else {
+        clearInterval(timer);
+    }
+}
+
+function resetGame() {
+    loadParagraph();
+    clearInterval(timer);
+    timeLeft = maxTime;
+    charIndex = mistakes = isTyping = 0;
+    inpField.value = "";
+    timeTag.innerText = timeLeft;
+    wpmTag.innerText = 0;
+    mistakeTag.innerText = 0;
+    cpmTag.innerText = 0;
+}
+
+loadParagraph();
+inpField.addEventListener("input", initTyping);
+tryAgainBtn.addEventListener("click", resetGame);
+</script>
+</html>
